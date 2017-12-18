@@ -65,7 +65,7 @@ public class KeyboardVisibilityEvent {
         final ViewTreeObserver.OnGlobalLayoutListener layoutListener =
                 new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                    private final Rect r = new Rect();
+                    private final Rect windowVisibleRect = new Rect();
 
                     private final int visibleThreshold = Math.round(
                             UIUtil.convertDpToPx(activity, KEYBOARD_VISIBLE_THRESHOLD_DP));
@@ -74,9 +74,9 @@ public class KeyboardVisibilityEvent {
 
                     @Override
                     public void onGlobalLayout() {
-                        activityRoot.getWindowVisibleDisplayFrame(r);
+                        activityRoot.getWindowVisibleDisplayFrame(windowVisibleRect);
 
-                        int heightDiff = activityRoot.getRootView().getHeight() - r.height();
+                        int heightDiff = activityRoot.getRootView().getHeight() - windowVisibleRect.height();
 
                         boolean isOpen = heightDiff > visibleThreshold;
 
@@ -87,7 +87,11 @@ public class KeyboardVisibilityEvent {
 
                         wasOpened = isOpen;
 
-                        listener.onVisibilityChanged(isOpen);
+                        if (isOpen) {
+                            listener.onKeyboardOpened(heightDiff);
+                        } else {
+                            listener.onKeyboardClosed();
+                        }
                     }
                 };
         activityRoot.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);

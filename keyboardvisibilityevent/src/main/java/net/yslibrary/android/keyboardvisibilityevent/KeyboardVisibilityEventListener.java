@@ -5,5 +5,7 @@ package net.yslibrary.android.keyboardvisibilityevent;
  */
 public interface KeyboardVisibilityEventListener {
 
-    void onVisibilityChanged(boolean isOpen);
+    void onKeyboardOpened(int keyboardHeight);
+
+    void onKeyboardClosed();
 }

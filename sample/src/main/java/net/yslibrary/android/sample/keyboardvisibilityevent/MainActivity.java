@@ -13,6 +13,8 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 import net.yslibrary.android.keyboardvisibilityevent.Unregistrar;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView mKeyboardStatus;
@@ -38,8 +40,13 @@ public class MainActivity extends AppCompatActivity {
          */
         mUnregistrar = KeyboardVisibilityEvent.registerEventListener(this, new KeyboardVisibilityEventListener() {
             @Override
-            public void onVisibilityChanged(boolean isOpen) {
-                updateKeyboardStatusText(isOpen);
+            public void onKeyboardOpened(int keyboardHeight) {
+                updateKeyboardStatusText(true, keyboardHeight);
+            }
+
+            @Override
+            public void onKeyboardClosed() {
+                updateKeyboardStatusText(false);
             }
         });
 
@@ -54,8 +61,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateKeyboardStatusText(boolean isOpen) {
-        mKeyboardStatus.setText(String.format("keyboard is %s", (isOpen ? "visible" : "hidden")));
+        updateKeyboardStatusText(isOpen, 0);
     }
+
+    private void updateKeyboardStatusText(boolean isOpen, int keyboardHeight) {
+        String keyboardStatusText;
+        if (isOpen) {
+            keyboardStatusText = String.format(
+                    Locale.getDefault(), "Keyboard is visible. Its height = %d", keyboardHeight);
+        } else {
+            keyboardStatusText = "Keyboard is hidden";
+        }
+        mKeyboardStatus.setText(keyboardStatusText);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
