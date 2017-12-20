@@ -21,13 +21,7 @@ _Please note that as described in this [issue](https://github.com/yshrsmz/Keyboa
 
 ## Installation
 
-from 2.0.0, AAR is distributed via jCenter.
-
-```groovy
-dependencies {
-    compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
-}
-```
+Grab this fork [on Jitpack](https://jitpack.io/#hitask/KeyboardVisibilityEvent)
 
 ## Usage
 
@@ -41,7 +35,12 @@ KeyboardVisibilityEvent.setEventListener(
         getActivity(),
         new KeyboardVisibilityEventListener() {
             @Override
-            public void onVisibilityChanged(boolean isOpen) {
+            public void onKeyboardOpened(int keyboardHeight) {
+                // some code depending on keyboard visiblity status
+            }
+
+            @Override
+            public void onKeyboardClosed() {
                 // some code depending on keyboard visiblity status
             }
         });
@@ -54,7 +53,12 @@ Unregistrar unregistrar = KeyboardVisibilityEvent.registerEventListener(
         getActivity(),
         new KeyboardVisibilityEventListener() {
             @Override
-            public void onVisibilityChanged(boolean isOpen) {
+            public void onKeyboardOpened(int keyboardHeight) {
+                // some code depending on keyboard visiblity status
+            }
+
+            @Override
+            public void onKeyboardClosed() {
                 // some code depending on keyboard visiblity status
             }
         });
